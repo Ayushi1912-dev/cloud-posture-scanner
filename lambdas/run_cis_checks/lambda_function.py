@@ -38,7 +38,7 @@ def check_s3_public_access(s3):
         for bucket in buckets:
             name = bucket['Name']
             try:
-                pab = s3.get_bucket_public_access_block(Bucket=name)
+                pab = s3.get_public_access_block(Bucket=name)
                 cfg = pab['PublicAccessBlockConfiguration']
                 blocked = all([
                     cfg.get('BlockPublicAcls', False),

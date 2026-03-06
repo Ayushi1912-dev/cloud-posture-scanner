@@ -48,16 +48,16 @@ def lambda_handler(event, context):
 
             # --- Public Access Block ---
             try:
-                pab = s3.get_bucket_public_access_block(Bucket=bucket_name)
-                cfg = pab['PublicAccessBlockConfiguration']
+                public_access = s3.get_public_access_block(Bucket=bucket_name)
+                config = public_access['PublicAccessBlockConfiguration']
                 all_blocked = all([
-                    cfg.get('BlockPublicAcls', False),
-                    cfg.get('BlockPublicPolicy', False),
-                    cfg.get('IgnorePublicAcls', False),
-                    cfg.get('RestrictPublicBuckets', False)
+                    config.get('BlockPublicAcls', False),
+                    config.get('BlockPublicPolicy', False),
+                    config.get('IgnorePublicAcls', False),
+                    config.get('RestrictPublicBuckets', False)
                 ])
                 access_policy = 'PRIVATE' if all_blocked else 'PUBLIC'
-                public_access_config = cfg
+                public_access_config = config
             except ClientError:
                 access_policy = 'UNKNOWN'
                 public_access_config = {}
